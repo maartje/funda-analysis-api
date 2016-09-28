@@ -1,0 +1,3 @@
+# location => dataframe
+
+# load data from csv, or azure, or ...
