@@ -1,0 +1,46 @@
+start_app:
+1. read data from table storage (or csv) => dataframe
+2. clean data                            => dataframe
+
+3. preprocess data                       => numpy array 
+4a. train a regression model        => model
+4b. train a nearest-neighbour model => model
+4c. ....
+
+3. calculate statistics
+
+handle request for predicting a house:
+1. get the query data for a house
+2. create a dataframe record from this data
+3. create a numpy array representing an instance of an house (see: preprocess)
+4. call model.predict(np_array_house) => vraagprijs
+5. return JSON data
+
+handle request for statistics, i.e.
+average m2 price per region, per year, per region-per-year, list for time period, get price-loc pairs:
+1. get the query data
+2. get stat data
+3. return JSON
+
+URLS
+
+ML
+huizenmarkt/regression? postcode=1016xe & oppvl=135m2 & eigendomssituatie=volle eigendom & periode_start=2015 & periode_end=2016
+huizenmarkt/nearest-neighbours? postcode=...
+huizenmarkt/geo_locatie? postcode = ..., huisnr = ...
+
+DATA
+huizenmarkt/huizen? funda_id = ..., postcode  = ...,
+WHERE: ...
+(SELECT: ...)
+
+STATS (groupby)
+huizenmarkt/stats? 
+WHERE: wijk=1016, year = ...
+SELECT: average prices per year, 
+
+
+
+
+
+
