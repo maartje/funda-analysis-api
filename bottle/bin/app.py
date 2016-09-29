@@ -1,9 +1,9 @@
 from bottle import route, run, request
 from linear_regression import LinearRegression
-from ml_data import ML_Data
+from machine_learning import MachineLearning
 
-ml_data = ML_Data()
-linear_regression = LinearRegression(ml_data)
+ml = MachineLearning()
+ml.initialize()
 
 @route('/hello')
 def hello():
@@ -12,7 +12,8 @@ def hello():
 @route('/regression')
 def regression():
     '/regression?postcode=1016XE&woonoppervlakte=144&buitenoppervlakte=58'
-    vraagprijs = linear_regression.predict(request.query.dict)[0]
+    
+    vraagprijs = ml.linear_regression.predict(request.query.dict)
     return {'vraagprijs' : vraagprijs}
 
 
