@@ -1,5 +1,6 @@
 from csv_reader import CSV_Reader
-"""Models for predicting housing prices trained on Funda data set."""
+from funda_data import columns, index_column
+"""Processing pipeline that results in predictive models trained on Funda data set."""
 
 from preprocessor import Preprocessor
 from feature_selector_linear_regression import FeatureSelectorLinearRegression
@@ -17,9 +18,10 @@ class MachineLearning:
         """Fit models on funda data."""
         
         # load data
-        path_to_csv = "xxx.csv"
-        data_reader = CSV_Reader(path_to_csv)
+        path_to_csv = "sample_amsterdam.csv"
+        data_reader = CSV_Reader(path_to_csv, columns, index_column)
         df_housing_data = data_reader.get_data()
+        print df_housing_data[0:1]
 
         # clean and transform
         preprocessor = Preprocessor()
