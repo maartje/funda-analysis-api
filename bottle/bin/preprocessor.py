@@ -1,11 +1,14 @@
-# dataframe => dataframe
-
-# clean, i.e. removing rows that miss essential data
-# transform, i.e. 'years_since_2000' instead of 'date'
-# aggregate, i.e. construct columns with aggregate data such as 'buiten_oppervlakte'
-# select, i.e. drop columns that contain data that is no longer relevant
+""" Preprocessor for Funda data."""
 
 class Preprocessor:
+    """ Preprocessor for funda data."""
     
     def preprocess(self, df):
+        """ Return a dataframe with cleaned Funda data.
+        
+        Preprocess Funda data:
+        - Clean data by removing rows that miss essential info
+        - Construct new columns that contain aggregated data or data in other format
+        - Drop columns that are irrelevant
+        """
         return None
