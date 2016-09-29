@@ -3,6 +3,7 @@
 from bottle import route, run, request
 from linear_regression import LinearRegression
 from machine_learning import MachineLearning
+from request_params_mapper import RequestParamsMapper
 
 @route('/regression')
 def regression():
@@ -16,7 +17,11 @@ def regression():
     - ...
     example url: /regression?postcode=1016XE&woonoppervlakte=144&buitenoppervlakte=58
     """
-    vraagprijs = ml.linear_regression.predict(request.query.dict)
+    
+    # TODO: in separate class
+    features = RequestParamsMapper().extract_features(request.query.dict)
+    print features
+    vraagprijs = ml.linear_regression.predict(features)
     return {'vraagprijs' : vraagprijs}
 
 
