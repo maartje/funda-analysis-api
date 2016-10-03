@@ -1,6 +1,6 @@
 """ Columns to be loaded from funda data set"""
 
-path = "sample_amsterdam.csv"
+path = "../data/sample_amsterdam.csv"
 """ path to .csv file """
 
 columns = [

@@ -6,19 +6,16 @@ import numpy as np
 class LinearRegression:
    """Linear regression model to predict housing prices"""
 
-   def __init__(self, feature_selector):
+   def __init__(self):
       """Initialize linear regression model."""
       self.model = linear_model.LinearRegression()
-      self.feature_selector = feature_selector
       self.feature_names = np.array([])
       
       
-   def fit(self, df):
-      """Train linear regression model on funda data."""
-      df_features, ds_targets = self.feature_selector.select_features_and_targets(df)
-      self.feature_names = df_features.columns.values
-      self.model.fit(np.array(df_features), np.array(ds_targets))
-      
+   def fit(self, features, targets):
+      """Train linear regression model."""
+      self.model.fit(features, targets)
+
    def predict(self, dict):
       """Predict 'vraagprijs' using linear regression."""
       features = self._dict_to_features(dict)
