@@ -1,12 +1,20 @@
-"""Linear regression model to predict housing prices."""
+"""Model to predict the 'vraagprijs' from the features of a house"""
 
 import numpy as np
 
 class WrappedModel:
-   """Linear regression model to predict housing prices"""
+   """Model to predict the 'vraagprijs' from the features of a house
+   
+   The model transforms the provided features so that they are conform
+   the features that has been used to train the model.
+   """
 
    def __init__(self, model, feature_selector):
-      """Initialize linear regression model."""
+      """Initialize the model.
+      
+      model: skicit model for predicting
+      feature_selector: transforms the features so that they suit the model
+      """
       self.model = model
       self.feature_selector = feature_selector
 

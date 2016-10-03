@@ -1,7 +1,9 @@
+""" Builder class that implements the pipeline to construct a predictive model. """
 import numpy as np
 from wrapped_model import WrappedModel 
 
 class ModelBuilder:
+    """ Builder class that implements the pipeline to construct a predictive model. """
     
     def __init__(self):
         self.data_reader = None
@@ -29,7 +31,8 @@ class ModelBuilder:
         self.model = model
         
     def build(self):
-        """Fit model on data."""
+        """Construct and fit model on data."""
+        
         df = self.data_reader.get_data()
         
         for data_processor in self.data_processors:
@@ -38,5 +41,4 @@ class ModelBuilder:
         df_features, ds_targets = self.feature_selector.select_features_and_targets(df)
         
         self.model.fit(np.array(df_features), np.array(ds_targets))
-        print "fit"
         return WrappedModel(self.model, self.feature_selector)
