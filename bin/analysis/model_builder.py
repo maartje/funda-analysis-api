@@ -1,4 +1,5 @@
 import numpy as np
+from wrapped_model import WrappedModel 
 
 class ModelBuilder:
     
@@ -35,8 +36,7 @@ class ModelBuilder:
             df = data_processor.process(df)
         
         df_features, ds_targets = self.feature_selector.select_features_and_targets(df)
-        feature_names = df_features.columns.values
         
-        self.model.feature_names = feature_names
         self.model.fit(np.array(df_features), np.array(ds_targets))
-        
+        print "fit"
+        return WrappedModel(self.model, self.feature_selector)

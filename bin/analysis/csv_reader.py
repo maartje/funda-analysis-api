@@ -1,10 +1,19 @@
 """CSV reader that lazily loads Funda data from a .csv file into a pandas dataframe."""
 import pandas as pd
 
+columns = [
+    'id',
+    'postcode_wijk',
+    'vraagprijs',
+    'woonoppervlakte'
+]
+
+index_column = 'id'
+
 class CSV_Reader:
     """CSV reader that lazily loads Funda data from a .csv file into a pandas dataframe."""
     
-    def __init__(self, filename, columns = None, index_column = None):
+    def __init__(self, filename, columns = columns, index_column = index_column):
         """Initialize CSV reader."""
         self.filename = filename
         self.columns = columns
