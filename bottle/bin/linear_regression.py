@@ -27,7 +27,7 @@ class LinearRegression:
 
    def _dict_to_features(self, dict):
         """Transforms dictionary into a numpy array with features for the linear regression model."""
-        dict[dict['postcode_wijk']] = 1 * float(dict['woonoppervlakte']) #set value for categorical variable
+        dict[dict['postcode_wijk']] = 1 * dict['woonoppervlakte'] #set value for categorical variable
         feature_array = np.array([dict.get(key, 0) for key in self.feature_names]) #create feature array with values from dict and default values
         print feature_array
         return [feature_array]
