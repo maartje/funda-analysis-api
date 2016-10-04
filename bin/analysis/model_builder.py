@@ -6,6 +6,7 @@ class ModelBuilder:
     """ Builder class that implements the pipeline to construct a predictive model. """
     
     def __init__(self):
+        """ Constructor. """
         self.data_reader = None
         self.data_processors = []
         self.feature_selector = None
@@ -13,12 +14,15 @@ class ModelBuilder:
 
     
     def setDataReader(self, data_reader):
+        """ Set data reader to read data into a pandas dataframe. """
         self.data_reader = data_reader
         
     def addDataProcessor(self, data_processor):
+        """ Adds a data processor that processes the data in the dataframe. """
         self.data_processors.append(data_processor)
         
     def setFeatureSelector(self, feature_selector):
+        """ Set feature selector that selects features and targets from the dataframe. """
         self.feature_selector = feature_selector
 
     # def setSplitter(self, splitter):
@@ -28,10 +32,15 @@ class ModelBuilder:
     #     self.splitter = splitter
         
     def setModel(self, model):
+        """ Set skicit model for predicting a target value from features. """
         self.model = model
         
     def build(self):
-        """Construct and fit model on data."""
+        """Construct and train model on data.
+        
+        Return a Wrapped model that can predict the target value
+        from a dictionairy of features
+        """
         
         df = self.data_reader.get_data()
         
