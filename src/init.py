@@ -1,23 +1,44 @@
 from analysis.csv_reader import CSV_Reader
-from analysis.preprocessor import Preprocessor
+from analysis.preprocessors.row_filter import RowFilter
 from analysis.feature_selector_linear_regression import FeatureSelectorLinearRegression
 from sklearn import linear_model
 from analysis.model_builder import ModelBuilder
 from analysis.statistics import Statistics
 
 def _build_linear_regression_model():
+    columns = [
+        'id',
+        'postcode_wijk',
+        'vraagprijs',
+        'woonoppervlakte'
+    ]
+    index_column = 'id'
+    dtype={'postcode_wijk': str}
+    data_reader = CSV_Reader("../data/sample_amsterdam.csv", columns, index_column, dtype)
     model_builder = ModelBuilder() 
-    data_reader = CSV_Reader("../data/sample_amsterdam.csv")
     model_builder.setDataReader(data_reader)
-    model_builder.addDataProcessor(Preprocessor())
+    required_fields = ['vraagprijs', 'woonoppervlakte', 'postcode_wijk']
+    model_builder.addDataProcessor(RowFilter(required_fields))
     model_builder.setFeatureSelector(FeatureSelectorLinearRegression())
     model_builder.setModel(linear_model.LinearRegression())
     return model_builder.build()
 
 def _build_statistics():
-    data_reader = CSV_Reader("../data/sample_amsterdam.csv")
+    columns = [
+        'RowKey',
+        'vraagprijs',
+        'woonoppervlakte',
+        'woningtype',
+        'aangeboden_sinds',
+        'postcode_wijk',
+        'verkoopdatum'
+    ]    
+    index_column = 'RowKey'
+    data_reader = CSV_Reader("../data/funda_sold_amsterdam.csv", columns, index_column)
     df = data_reader.get_data()
-    df = Preprocessor().process(df)
+    required_fields = ['vraagprijs', 'woonoppervlakte', 'postcode_wijk']
+    rowfilter = RowFilter(required_fields)
+    df = rowfilter.process(df)
     return Statistics(df)
     
 

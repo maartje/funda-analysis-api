@@ -14,7 +14,8 @@ class FeatureSelectorLinearRegression:
         return df_features
     
     def select_features_and_targets(self, df):
-        """Return a tuple of selected features and targets as dataframe respectively dataserie.
+        """
+        Return a tuple of selected features and targets as dataframe respectively dataserie.
         
         Split categorical data into binairy columns.
         Select features to train linear regression model.
@@ -33,7 +34,4 @@ class FeatureSelectorLinearRegression:
         """Transforms a dictionary into a list with features for the linear regression model."""
         dict[dict['postcode_wijk']] = 1 * dict['woonoppervlakte'] #set value for categorical variable
         return [dict.get(key, 0) for key in self.feature_names]
-        
-        feature_array = np.array(xx) #create feature array with values from dict and default values
-        return [feature_array]
-    
+

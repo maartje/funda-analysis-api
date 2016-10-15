@@ -25,9 +25,11 @@ class ModelBuilder:
         """ Set feature selector that selects features and targets from the dataframe. """
         self.feature_selector = feature_selector
 
+    # TODO:
     # def setSplitter(self, splitter):
     #     self.splitter = splitter
 
+    # TODO:
     # def setEvaluator(self, splitter):
     #     self.splitter = splitter
         
