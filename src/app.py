@@ -24,6 +24,13 @@ def regression():
     vraagprijs = linear_regression_model.predict(features)
     return {'vraagprijs' : vraagprijs}
 
+@route('/mean')
+def mean():
+    select = request.query.dict.get('$select', None)
+    groupby = request.query.dict.get('$groupby', None)
+    df_means = statistics.mean(select, groupby)
+    return {'means' : df_means.to_dict('records')}
+
 @route('/summarystatistics')
 def summarystatistics():
     select = request.query.dict.get('$select', None)

@@ -1,5 +1,6 @@
 from analysis.csv_reader import CSV_Reader
 from analysis.preprocessors.row_filter import RowFilter
+from analysis.preprocessors.stats_fields_processor import StatsFieldsProcessor
 from analysis.feature_selector_linear_regression import FeatureSelectorLinearRegression
 from sklearn import linear_model
 from analysis.model_builder import ModelBuilder
@@ -36,9 +37,17 @@ def _build_statistics():
     index_column = 'RowKey'
     data_reader = CSV_Reader("../data/funda_sold_amsterdam.csv", columns, index_column)
     df = data_reader.get_data()
-    required_fields = ['vraagprijs', 'woonoppervlakte', 'postcode_wijk']
+    required_fields = [
+        'vraagprijs',
+        'woonoppervlakte',
+        'woningtype',
+        'aangeboden_sinds',
+        'postcode_wijk',
+        'verkoopdatum'
+    ]
     rowfilter = RowFilter(required_fields)
     df = rowfilter.process(df)
+    df = StatsFieldsProcessor().process(df)
     return Statistics(df)
     
 
