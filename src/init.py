@@ -35,7 +35,8 @@ def _build_statistics():
         'verkoopdatum'
     ]    
     index_column = 'RowKey'
-    data_reader = CSV_Reader("../data/funda_sold_amsterdam.csv", columns, index_column)
+    dtype={'postcode_wijk': str}
+    data_reader = CSV_Reader("../data/funda_sold_amsterdam.csv", columns, index_column, dtype)
     df = data_reader.get_data()
     required_fields = [
         'vraagprijs',

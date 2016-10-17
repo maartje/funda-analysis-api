@@ -28,7 +28,8 @@ def regression():
 def mean():
     select = request.query.dict.get('$select', None)
     groupby = request.query.dict.get('$groupby', None)
-    df_means = statistics.mean(select, groupby)
+    orderby = request.query.dict.get('$orderby', None)
+    df_means = statistics.mean(select, groupby, orderby)
     return {'means' : df_means.to_dict('records')}
 
 @route('/summarystatistics')

@@ -15,7 +15,7 @@ class Statistics:
             return self.df.groupby(groupby)[select].describe()
         return self.df[select].describe()
 
-    def mean(self, select, groupby = None):
+    def mean(self, select, groupby = None, orderby = None, ascending = True):
         """ Return summary statistics for selected column(s) in dataframe
         
         select: String or List of Strings
@@ -23,9 +23,11 @@ class Statistics:
         Return: dataframe or dataserie
         """
         if groupby:
-            df_mean = self.df.groupby(groupby)[select].mean()
+            df_means = self.df.groupby(groupby)[select].mean()
         else:
-            df_mean =  self.df[select].mean()
-        return df_mean.reset_index()
+            df_means =  self.df[select].mean()
+        df_means.reset_index(inplace = True)
+        df_means.sort(columns=orderby, axis=0, ascending=ascending, inplace=True)
+        return df_means
 
         

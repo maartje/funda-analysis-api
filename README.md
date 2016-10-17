@@ -9,3 +9,5 @@ https://funda-analysis-api-maartje.c9users.io/regression?postcode=1019RR&woonopp
 172.17.13.111:8080/hello
 
 https://funda-analysis-api-maartje.c9users.io/summarystatistics?$select=vraagprijs&$select=woonoppervlakte&$groupby=postcode_wijk
+
+https://funda-analysis-api-maartje.c9users.io/mean?$select=ppm2&$select=woonoppervlakte&$groupby=postcode_wijk$orderby=ppm2
