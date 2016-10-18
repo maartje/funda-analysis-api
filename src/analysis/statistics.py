@@ -1,7 +1,7 @@
 class Statistics:
     
     def __init__(self, fundaDataLoader):
-        self.fundaDataLoader = fundaDataLoader
+        self._fundaDataLoader = fundaDataLoader
     
     def mean(self, select, groupby = [], orderby = [], ascending = True):
         """ Return the means for the selected variabeles
@@ -13,7 +13,7 @@ class Statistics:
         """
         
         columns = select + groupby
-        df = self.fundaDataLoader.load(columns)
+        df = self._fundaDataLoader.load(columns)
 
         if groupby:
             df_means = df.groupby(groupby)[select].mean()

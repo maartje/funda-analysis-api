@@ -1,10 +1,14 @@
+"""Dataloader that fills a dataframe with values for requested funda variables."""
+
 import datetime
 import math
 
 class FundaDataLoader:
+    """Dataloader that fills a dataframe with values for requested funda variables."""
     
     def __init__(self, data_reader):
-        self.data_reader = data_reader
+        """Initialize FundaDataLoader."""
+        self._data_reader = data_reader
         self._index_column = 'RowKey'
         self._dtype = { 
             'postcode_wijk': str
@@ -14,13 +18,14 @@ class FundaDataLoader:
             'looptijd_in_dagen' : {'aangeboden_sinds', 'verkoop_datum'}
         }
         
-    def load(self, selected_columns):
+    def load(self, selected_variables):
+        """Return a dataframe for Funda data with the selected variables as columns."""
         usecolumns = {self._index_column}
-        for cname in selected_columns:
+        for cname in selected_variables:
             usecolumns = usecolumns.union(self._column_compositions.get(cname, {cname}))
-        df = self.data_reader.get_data(columns = usecolumns, index_column = self._index_column, dtype=self._dtype)
-        self._add_calculated_columns(df, selected_columns)
-        return df[selected_columns]
+        df = self._data_reader.get_data(columns = usecolumns, index_column = self._index_column, dtype=self._dtype)
+        self._add_calculated_columns(df, selected_variables)
+        return df[selected_variables]
     
     def _add_calculated_columns(self, df, selected_columns):
         if 'ppm2' in selected_columns:
@@ -46,7 +51,7 @@ class FundaDataLoader:
     def _looptijd_in_dagen(self, row):
         if self._is_missing(row['verkoopdatum']) or self._is_missing(row['aangeboden_sinds']):
             return float('NaN')    
-        verkoopdatum = datetime.datetime.strptime(row['verkoopdatum'][0:10], "%Y-%m-%d") #TODO: extract utility functions data fields
+        verkoopdatum = datetime.datetime.strptime(row['verkoopdatum'][0:10], "%Y-%m-%d")
         aanboddatum = datetime.datetime.strptime(row['aangeboden_sinds'][0:10], "%Y-%m-%d")
         return (verkoopdatum - aanboddatum).days
 

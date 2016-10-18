@@ -3,25 +3,19 @@
 import math
 
 class FilterMissingValues:
+    """ Filter for removing rows with missing values. """
 
     def __init__(self, required_fields = []):
-        self.required_fields = required_fields
+        """Initialize FilterMissingValues."""
+        self._required_fields = required_fields
 
     def process(self, df):
-        """ Return a dataframe with cleaned Funda data.
-        
-        Preprocess Funda data:
-        - Clean data by removing rows that miss essential info
-        """
-
-        # remove records missing essential data    
+        """ Return the dataframe without the rows that miss values for required fields."""
         df = df[df.apply(self._filter_records_missing_data, axis = 1)]
-        
         return df
         
-    # Detect missing values for 'vraagprijs' or 'woonoppervlakte' or 'postcode_wijk'
     def _filter_records_missing_data(self, row):
-        for column_name in self.required_fields:
+        for column_name in self._required_fields:
             if self._is_missing(row[column_name]):
                 return False
         return True
