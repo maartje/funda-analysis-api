@@ -1,11 +1,11 @@
 """Web API that exposes JSON endpoints for statistic analysis on the Amsterdam housing market."""
 
 from bottle import route, run, request
-from request_params_mapper import request_params_to_features
+from request_params_mapper import RequestParamsMapper
 from init import linear_regression_model, statistics
 from response_formatter import dataframe_to_dict 
 
-
+request_params_mapper = RequestParamsMapper()
 
 @route('/regression')
 def regression():
@@ -20,15 +20,16 @@ def regression():
     example url: /regression?postcode=1016XE&woonoppervlakte=144&buitenoppervlakte=58
     """
     
-    features = request_params_to_features(request.query.dict)
+    features = request_params_mapper.get_funda_variables(request.query.dict)
     vraagprijs = linear_regression_model.predict(features)
     return {'vraagprijs' : vraagprijs}
 
 @route('/mean')
 def mean():
-    select = request.query.dict.get('$select', None)
-    groupby = request.query.dict.get('$groupby', None)
-    orderby = request.query.dict.get('$orderby', None)
+    dict = request.query.dict
+    select = request_params_mapper.get_select(dict)
+    groupby = request_params_mapper.get_groupby(dict)
+    orderby = request_params_mapper.get_orderby(dict)
     
     df_means = statistics.mean(select, groupby, orderby)
     
