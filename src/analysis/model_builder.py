@@ -7,15 +7,18 @@ class ModelBuilder:
     
     def __init__(self):
         """ Constructor. """
-        self.data_reader = None
+        self.selected_variables = []
+        self.data_loader = None
         self.data_processors = []
         self.feature_selector = None
         self.model = None
 
+    def setSelectedVariables(self, selected_variables):
+        self.selected_variables = selected_variables
     
-    def setDataReader(self, data_reader):
+    def setDataLoader(self, data_loader):
         """ Set data reader to read data into a pandas dataframe. """
-        self.data_reader = data_reader
+        self.data_loader = data_loader
         
     def addDataProcessor(self, data_processor):
         """ Adds a data processor that processes the data in the dataframe. """
@@ -44,7 +47,7 @@ class ModelBuilder:
         from a dictionairy of features
         """
         
-        df = self.data_reader.get_data()
+        df = self.data_loader.load(self.selected_variables)
         
         for data_processor in self.data_processors:
             df = data_processor.process(df)

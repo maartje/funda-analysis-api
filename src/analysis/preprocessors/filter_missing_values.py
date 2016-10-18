@@ -1,8 +1,8 @@
-""" Clean and transform Funda data."""
+""" Filter for removing rows with missing values. """
 
 import math
 
-class RowFilter:
+class FilterMissingValues:
 
     def __init__(self, required_fields = []):
         self.required_fields = required_fields
@@ -13,10 +13,7 @@ class RowFilter:
         Preprocess Funda data:
         - Clean data by removing rows that miss essential info
         """
-        
-        # remove duplicated records
-        df = df[~df.index.duplicated()]
-    
+
         # remove records missing essential data    
         df = df[df.apply(self._filter_records_missing_data, axis = 1)]
         
