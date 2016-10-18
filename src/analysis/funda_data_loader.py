@@ -15,7 +15,10 @@ class FundaDataLoader:
         }
         self._column_compositions = {
             'ppm2' : {'vraagprijs', 'woonoppervlakte'},
-            'looptijd_in_dagen' : {'aangeboden_sinds', 'verkoop_datum'}
+            'verkoopdatum_jaar' : {'verkoopdatum'},
+            'verkoopdatum_maand' : {'verkoopdatum'},
+            'verkoopdatum_kwartaal' : {'verkoopdatum'},
+            'looptijd_in_dagen' : {'verkoopdatum', 'aangeboden_sinds'},
         }
         
     def load(self, selected_variables):
@@ -23,6 +26,7 @@ class FundaDataLoader:
         usecolumns = {self._index_column}
         for cname in selected_variables:
             usecolumns = usecolumns.union(self._column_compositions.get(cname, {cname}))
+        print usecolumns
         df = self._data_reader.get_data(columns = usecolumns, index_column = self._index_column, dtype=self._dtype)
         self._add_calculated_columns(df, selected_variables)
         return df[selected_variables]
