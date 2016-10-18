@@ -26,6 +26,17 @@ def regression():
 
 @route('/mean')
 def mean():
+    """ Return the mean for selected variables.
+
+    method: GET
+    url: /mean
+    querystring parameters:
+    - $select
+    - $groupby
+    - $orderby
+    example url: https://funda-analysis-api-maartje.c9users.io/mean?$select=ppm2&$select=woonoppervlakte&$groupby=postcode_wijk&$orderby=postcode_wijk
+    """
+
     dict = request.query.dict
     select = request_params_mapper.get_select(dict)
     groupby = request_params_mapper.get_groupby(dict)
