@@ -22,8 +22,8 @@ def _build_linear_regression_model():
     model_builder.setModel(linear_model.LinearRegression())
     return model_builder.build()
 
-def _build_statistics():
-    data_reader = CSV_Reader("../data/funda_sold_amsterdam.csv")
+def _build_statistics(path_to_csv):
+    data_reader = CSV_Reader(path_to_csv)
     fundaDataLoader = FundaDataLoader(data_reader)
     return Statistics(fundaDataLoader)
     
@@ -31,5 +31,8 @@ def _build_statistics():
 linear_regression_model = _build_linear_regression_model()
 """Linear regression model to predict the 'vraagprijs' from the features of a house."""
 
-statistics = _build_statistics()
-"""Summary statistics about funda housing market."""
+
+def get_statistics(gemeente):
+    """ Return summary statistics about funda housing market."""
+    path = "../data/funda_sold_{}.csv".format(gemeente.lower())
+    return _build_statistics(path)

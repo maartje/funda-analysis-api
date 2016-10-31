@@ -2,7 +2,7 @@
 
 from bottle import route, run, request
 from request_params_mapper import RequestParamsMapper
-from init import linear_regression_model, statistics
+from init import linear_regression_model, get_statistics
 from response_formatter import dataframe_to_dict 
 
 request_params_mapper = RequestParamsMapper()
@@ -23,9 +23,10 @@ def regression():
     features = request_params_mapper.get_funda_variables(request.query.dict)
     vraagprijs = linear_regression_model.predict(features)
     return {'vraagprijs' : vraagprijs}
+    
 
-@route('/mean')
-def mean():
+@route('/gemeente(<gemeente>)/mean')
+def mean(gemeente):
     """ Return the mean for selected variables.
 
     method: GET
@@ -34,15 +35,16 @@ def mean():
     - $select
     - $groupby
     - $orderby
-    example url: https://funda-analysis-api-maartje.c9users.io/mean?$select=ppm2&$select=woonoppervlakte&$groupby=postcode_wijk&$orderby=postcode_wijk
+    example url: https://funda-analysis-api-maartje.c9users.io/gemeente(amsterdam)/mean?$select=ppm2&$select=woonoppervlakte&$groupby=postcode_wijk&$orderby=postcode_wijk
     """
 
     dict = request.query.dict
     select = request_params_mapper.get_select(dict)
     groupby = request_params_mapper.get_groupby(dict)
     orderby = request_params_mapper.get_orderby(dict)
+    # filter = request_params_mapper.get_filter(dict)
     
-    df_means = statistics.mean(select, groupby, orderby)
+    df_means = get_statistics(gemeente).mean(select, groupby, orderby)
     
     return {'means' : df_means.to_dict('records')}
 
