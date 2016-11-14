@@ -10,12 +10,6 @@ class RequestParamsMapper:
     
     def get_orderby(self, dict):
         return dict.get('$orderby', None)
-
-    # def get_filter(self, dict):
-    #     filter = dict.get('$filter', None)
-    #     # "gemeente eq Amsterdam"
-    #     return filter
-
     
     def get_funda_variables(self, dict):
         """ Return a dictionairy with funda variables from the data provided by the query string 

@@ -12,7 +12,7 @@ def _build_linear_regression_model():
         'vraagprijs',
         'woonoppervlakte'
     ]
-    data_reader = CSV_Reader("../data/funda_sold_amsterdam.csv")
+    data_reader = CSV_Reader(["../data/funda_sold_amsterdam.csv"])
     fundaDataLoader = FundaDataLoader(data_reader)
     model_builder = ModelBuilder()
     model_builder.setSelectedVariables(variables)
@@ -22,8 +22,8 @@ def _build_linear_regression_model():
     model_builder.setModel(linear_model.LinearRegression())
     return model_builder.build()
 
-def _build_statistics(path_to_csv):
-    data_reader = CSV_Reader(path_to_csv)
+def _build_statistics(paths_to_csv):
+    data_reader = CSV_Reader(paths_to_csv)
     fundaDataLoader = FundaDataLoader(data_reader)
     return Statistics(fundaDataLoader)
     
@@ -34,5 +34,9 @@ linear_regression_model = _build_linear_regression_model()
 
 def get_statistics(gemeente):
     """ Return summary statistics about funda housing market."""
-    path = "../data/funda_sold_{}.csv".format(gemeente.lower())
-    return _build_statistics(path)
+    
+    if gemeente:
+        paths = ["../data/funda_sold_{}.csv".format(gemeente.lower())]
+    else:
+        paths = ["../data/funda_sold_{}.csv".format(gemeente) for gemeente in ['amsterdam', 'utrecht', 'rotterdam', 'denhaag']]
+    return _build_statistics(paths)

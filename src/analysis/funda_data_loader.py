@@ -26,7 +26,6 @@ class FundaDataLoader:
         usecolumns = {self._index_column}
         for cname in selected_variables:
             usecolumns = usecolumns.union(self._column_compositions.get(cname, {cname}))
-        print usecolumns
         df = self._data_reader.get_data(columns = usecolumns, index_column = self._index_column, dtype=self._dtype)
         self._add_calculated_columns(df, selected_variables)
         return df[selected_variables]
