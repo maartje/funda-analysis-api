@@ -2,13 +2,13 @@
 
 from bottle import route, run, request
 from request_params_mapper import RequestParamsMapper
-from init import linear_regression_model, get_statistics
+from init import get_regression_model, get_statistics
 from response_formatter import dataframe_to_dict 
 
 request_params_mapper = RequestParamsMapper()
 
-@route('/regression')
-def regression():
+@route('/gemeente(<gemeente>)/regression')
+def regression(gemeente):
     """ Predict the 'vraagprijs' of a house using linear regression.
 
     method: GET
@@ -21,20 +21,9 @@ def regression():
     """
     
     features = request_params_mapper.get_funda_variables(request.query.dict)
-    vraagprijs = linear_regression_model.predict(features)
+    vraagprijs = get_regression_model(gemeente).predict(features)
     return {'vraagprijs' : vraagprijs}
     
-# @route('/mean')
-# def mean():
-#     dict = request.query.dict
-#     select = request_params_mapper.get_select(dict)
-#     groupby = request_params_mapper.get_groupby(dict)
-#     orderby = request_params_mapper.get_orderby(dict)
-
-#     df_means = get_statistics().mean(select, groupby, orderby)
-    
-#     return {'means' : df_means.to_dict('records')}
-
 @route('/mean')
 @route('/gemeente(<gemeente>)/mean')
 def mean(gemeente = None):
