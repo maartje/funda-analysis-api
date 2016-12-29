@@ -3,39 +3,37 @@
 from bottle import route, run, request
 from request_params_mapper import RequestParamsMapper
 from init import get_regression_model, get_statistics
-from response_formatter import dataframe_to_dict 
 
 request_params_mapper = RequestParamsMapper()
 
-@route('/gemeente(<gemeente>)/regression')
+@route('/<gemeente>/regression')
 def regression(gemeente):
     """ Predict the 'vraagprijs' of a house using linear regression.
 
     method: GET
-    url: /regression
+    url: /<gemeente>/regression
     querystring parameters:
     - postcode
-    - buitenoppervlakte
-    - ...
-    example url: /regression?postcode=1016XE&woonoppervlakte=144&buitenoppervlakte=58
+    - woonoppervlakte
+    - ... [optional]
+    example url: /amsterdam/regression?postcode=1016XE&woonoppervlakte=64&buitenoppervlakte=5
     """
     
     features = request_params_mapper.get_funda_variables(request.query.dict)
     vraagprijs = get_regression_model(gemeente).predict(features)
     return {'vraagprijs' : vraagprijs}
     
-@route('/mean')
-@route('/gemeente(<gemeente>)/mean')
-def mean(gemeente = None):
+@route('/<gemeente>/mean')
+def mean(gemeente):
     """ Return the mean for selected variables.
 
     method: GET
-    url: /mean
+    url: /<gemeente>/mean
     querystring parameters:
     - $select
-    - $groupby
-    - $orderby
-    example url: https://funda-analysis-api-maartje.c9users.io/gemeente(amsterdam)/mean?$select=ppm2&$select=woonoppervlakte&$groupby=postcode_wijk&$orderby=postcode_wijk
+    - $groupby [optional]
+    - $orderby [optional]
+    example url: /amsterdam/mean?$select=ppm2&$select=woonoppervlakte&$groupby=postcode_wijk&$orderby=postcode_wijk
     """
     
     dict = request.query.dict

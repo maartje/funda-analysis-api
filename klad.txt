@@ -1,6 +1,6 @@
-https://funda-analysis-api-maartje.c9users.io/gemeente(amsterdam)/regression?postcode=1019RR&woonoppervlakte=144&buitenoppervlakte=58
+https://funda-analysis-api-maartje.c9users.io/amsterdam/regression?postcode=1019RR&woonoppervlakte=144&buitenoppervlakte=58
 
-https://funda-analysis-api-maartje.c9users.io/gemeente(amsterdam)/mean?$select=ppm2&$select=woonoppervlakte&$groupby=postcode_wijk&$orderby=ppm2
+https://funda-analysis-api-maartje.c9users.io/amsterdam/mean?$select=ppm2&$select=woonoppervlakte&$groupby=postcode_wijk&$orderby=ppm2
 
 ======================================
 install bottle
