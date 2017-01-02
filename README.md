@@ -16,12 +16,12 @@ The API exposes endpoints for summary statistics and machine learning models as 
 
 |        | Description |
 | ------ | ----------- |
-| `mean`   | Returns the [mean](#Mean) for a set of selected variabeles, optionally grouped and ordered. Example:               <br> `/amsterdam/mean?$select=ppm2&$groupby=postcode_wijk` |
-| `linear regression` | Returns a prediction of the sales price of a house using [regression](#Regression).                  Example:  <br> `amsterdam/regression?postcode=1019RR&woonoppervlakte=144`|
-| `k-nearest-neighbors`    | Returns similar houses using [k-nearest-neighbors](#Nearest-neighbors). Example: <br>                                  `amsterdam/nearest-neighbors?postcode=1019RR&woonoppervlakte=144&bouwjaar=1995`|
+| `mean`   | Returns the [mean](#mean) for a set of selected variabeles, optionally grouped and ordered. Example:               <br> `/amsterdam/mean?$select=ppm2&$groupby=postcode_wijk` |
+| `linear regression` | Returns a prediction of the sales price of a house using [regression](#regression).                  Example:  <br> `amsterdam/regression?postcode=1019RR&woonoppervlakte=144`|
+| `k-nearest-neighbors`    | Returns a prediction of the sales price based on similar houses. See [k-nearest-neighbors](#nearest-neighbors). Example: <br>                                  `amsterdam/nearest-neighbors?postcode=1019RR&woonoppervlakte=144&bouwjaar=1995`|
 
-
-#### Mean
+<a name="mean"></a>
+#### Mean 
 
 The `GET mean` request returns the mean for a set of selected variables
 in a city region (gemeente), optionally grouped and ordered. For example, `/amsterdam/mean$select=vraagprijs&$groupby=postcode_wijk` returns the mean sales price for all 4-digit postal code regions. Multiple variables can be passed by using multiple select, groupby or ordering parameters, i.e. `$select=<variable1>&$select=<variable2>`.
@@ -47,6 +47,7 @@ _Response_
         ]
     }
 
+<a name="regression"></a>
 #### Regression
 
 The `GET regression` request returns a prediction of the sales price for a house based on its features passed as query parameters. For example `amsterdam/regression?postcode=1019RR&woonoppervlakte=144` will return the predicted sales price for a house with postcode '1019 RR' and living area '144 m<sup>2</sup>'. 
@@ -65,6 +66,8 @@ _Response_
     { "vraagprijs" : <value> }
 
 
+
+<a name="nearest-neighbors"></a>
 #### Nearest neighbors
 
 (not implemented yet)
