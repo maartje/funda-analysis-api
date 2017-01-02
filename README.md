@@ -1,9 +1,12 @@
 ## Overview
-JSON REST API that exposes endpoints to run analysis functions on data from the [Funda](http://www.funda.nl/) housing website. The data is scraped starting from october 2016 and includes de regions Amsterdam, Utrecht, Rotterdam and Den Haag.
+JSON REST API exposing analysis functions on data from the [Funda](http://www.funda.nl/) housing website. The data is collected starting from october 2016 and includes de regions Amsterdam, Utrecht, Rotterdam and Den Haag.
+
+## Motivation
+This Web API is part of a study project to learn data science. The main learning purposes: Python, pandas, numpy, scikit-learn, predictive models, API development.
 
 ## Getting Started
 
-install [bottle](http://bottlepy.org/docs/dev/), [pandas](http://pandas.pydata.org/) and [scikit-learn](http://scikit-learn.org/stable/)
+install [bottle](http://bottlepy.org/docs/dev/), [pandas](http://pandas.pydata.org/), [scikit-learn](http://scikit-learn.org/stable/) and [azure-storage](https://github.com/Azure/azure-storage-python)
 
 run app.py
 
@@ -14,8 +17,8 @@ The API exposes endpoints for summary statistics and machine learning models as 
 |        | Description |
 | ------ | ----------- |
 | `mean`   | Returns the [mean](#Mean) for a set of selected variabeles, optionally grouped and ordered. Example:               <br> `/amsterdam/mean?$select=ppm2&$groupby=postcode_wijk` |
-| `regression` | Returns a prediction of the sales price of a house using [regression](#Regression).                  Example:  <br> `amsterdam/regression?postcode=1019RR&woonoppervlakte=144`|
-| `nearest-neighbors`    | Returns similar houses using [k-nearest-neighbors](#Nearest-neighbors). Example: <br>                                  `amsterdam/nearest-neighbors?postcode=1019RR&woonoppervlakte=144&bouwjaar=1995`|
+| `linear regression` | Returns a prediction of the sales price of a house using [regression](#Regression).                  Example:  <br> `amsterdam/regression?postcode=1019RR&woonoppervlakte=144`|
+| `k-nearest-neighbors`    | Returns similar houses using [k-nearest-neighbors](#Nearest-neighbors). Example: <br>                                  `amsterdam/nearest-neighbors?postcode=1019RR&woonoppervlakte=144&bouwjaar=1995`|
 
 
 #### Mean
@@ -66,14 +69,14 @@ _Response_
 
 (not implemented yet)
 
-The `GET nearest-neighbors` request returns houses that have features that are similar to those passed in the query parameters. The intention is to provide sellers and buyers of a house the opportunity to compare similar houses. Features that are used for comparison:
+The `GET nearest-neighbors` request returns a prediction of the price based on houses with features that are similar to those passed in the query parameters. The intention is to provide sellers and buyers of a house the opportunity to compare similar houses. Features that are used for comparison:
 `postcode`,
 `woonoppervlakte`,
 `buitenoppervlakte`,
 `bouwjaar`,
 `woning_type`,
 `tuin`.
-The `$select` option can be used to specify a subset of features to include in the response.
+The `$select` option can be used to specify a subset of housing features to include in the response.
 
 
 _Request_
@@ -84,83 +87,105 @@ _Request_
 _Response_
 
     {  
+       "vraagprijs" : <value>,
        "houses" : [ ... ]
     }
 
 
-#### Houses
 
-(not implemented yet)
-
-_Request_
-
-    method: GET
-    uri: /<gemeente>/houses??$filter=postcode_wijk eq '1016XE'$select=<feature>
-
-_Response_
-
-    {  
-       "houses" : [ ... ]
-    }
-    
 ## Data Model
 
-**aangeboden_sinds** : *String [yyyy-mm-dd]* <br>
+**url** : *String* <br>
+
+
+<!--locatie-->
+
+**gemeente** : *string {amsterdam, denhaag, rotterdam, utrecht}*
+**huisnummer**  : *String*<br>
+**postcode**  : *String [\d{4} [a-z]{2}]*<br>
+**postcode_regio**  : *String [\d{2}]*<br>
+**postcode_wijk**  : *String [\d{4}]*<br>
+**straat**  : *String* <br>
+
+
+<!--vraagprijs-->
+
+**vraagprijs**  : *Number*<br>
+**kosten_koper**  : *Boolean*<br>
+**ppm2** : *Number* <br>
+
+
+<!--oppervlakte--> 
+
+**woonoppervlakte** : *Number* <br>
+**perceel_oppervlakte** : *Number* <br>
+**inhoud** : *Number* <br>
+
+
+<!--soort woning-->
+
+**soort_woning** : *String* <br>
+**verdieping** : *Number*  <br>
+**woningtype** : *String {huis, appartement}* <br>
+**woonlagen** <br>
 **bouwjaar** : *Number* <br>
 **bouwperiode_end** : *Number* <br>
 **bouwperiode_start** : *Number* <br>
-energielabel,
-garage_text,
 
 
-looptijd,
-soort_woning,
-url,
-verdieping,
-verkocht,
-verkoopdatum,
-vliering,
-woningtype,
-woonlagen,
-woonoppervlakte,
-perceel_oppervlakte,
+<!--verkoop-->
+
+**aangeboden_sinds** : *String [yyyy-mm-dd]* <br>
+**verkocht** : *Boolean* <br>
+**verkoopdatum** : *String [yyy-mm-dd]* <br>
+**looptijd** : *String* <br>
+**verkoopdatum_jaar** : : *Number* <br>
+**verkoopdatum_maand** : : *Number* <br>
+**verkoopdatum_kwartaal** : *Number* <br>
+**looptijd-in-dagen**  : *Number*<br>
+
 
 <!--bergruimte-->
-externe_bergruimte_oppervlakte,
-inpandige_ruimte_oppervlakte,
-zolder,
-kelder,
-schuur_of_berging,
+
+**externe-bergruimte-oppervlakte**  : *Number*<br>
+**inpandige-ruimte-oppervlakte** : *Number* <br>
+**zolder** : *Boolean* <br>
+**kelder** : *Boolean* <br>
+**schuur-of-berging** : *Boolean* <br>
+**vliering** : *Boolean* <br>
+**garage-text** : *String* <br>
+
 
 <!--kenmerken-->
+
 **aparte_toiletten** : *Number* <br>
 **badkamers**        : *Number* <br>
 **badkamervoorzieningen** : *String* <br>
-kamers,
-slaapkamers,
+**kamers**  : *Number*<br>
+**slaapkamers**  : *Number*<br>
+**energielabel**  : *String {A, B, C, D, E, F, G}*<br>
 
-<!--vraagprijs-->
-vraagprijs,
-kosten_koper,
 
-<!--locatie-->
-**gemeente** : *string {amsterdam, denhaag, rotterdam, utrecht}*
-huisnummer,
-postcode,
-postcode_regio,
-postcode_wijk,
-straat,
+
+
+
 
 <!--erfpacht-->
-eigendomssituatie,
-kosten_erfpacht,
-eind_datum_erfpacht,
+
+**eigendomssituatie** : *String* <br>
+**kosten_erfpacht** : *Number* <br>
+**eind-datum-erfpacht** : *String [yyyy-mm-dd]* <br>
+
 
 <!--buitenruimte-->
-buitenruimte_oppervlakte,
+
+**buitenruimte-oppervlakte** : *Number* <br>
 **balkon** : *Boolean* <br>
-dakterras 
-tuin
-zonneterras,
-patio,
-plaats
+**dakterras** : *Boolean* <br>
+**tuin** : *Boolean* <br>
+**zonneterras** : *Boolean* <br>
+**patio** : *Boolean* <br>
+**plaats** : *Boolean* <br>
+
+
+
