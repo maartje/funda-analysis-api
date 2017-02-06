@@ -18,7 +18,10 @@ The API exposes endpoints for summary statistics and machine learning models as 
 | ------ | ----------- |
 | `mean`   | Returns the [mean](#mean) for a set of selected variabeles, optionally grouped and ordered. Example:               <br> `/amsterdam/mean?$select=ppm2&$groupby=postcode_wijk` |
 | `linear regression` | Returns a prediction of the sales price of a house using [regression](#regression).                  Example:  <br> `amsterdam/regression?postcode=1019RR&woonoppervlakte=144`|
+
+<!--
 | `k-nearest-neighbors`    | Returns a prediction of the sales price based on similar houses. See [k-nearest-neighbors](#nearest-neighbors). Example: <br>                                  `amsterdam/nearest-neighbors?postcode=1019RR&woonoppervlakte=144&bouwjaar=1995`|
+-->
 
 <a name="mean"></a>
 #### Mean 
@@ -66,7 +69,7 @@ _Response_
     { "vraagprijs" : <value> }
 
 
-
+<!--
 <a name="nearest-neighbors"></a>
 #### Nearest neighbors
 
@@ -93,7 +96,7 @@ _Response_
        "vraagprijs" : <value>,
        "houses" : [ ... ]
     }
-
+-->
 
 
 ## Data Model
